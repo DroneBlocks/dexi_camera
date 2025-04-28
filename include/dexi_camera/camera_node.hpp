@@ -24,4 +24,4 @@ private:
     static constexpr int JPEG_QUALITY = 80;
 };
 
-} // namespace dexi_camera_cpp
+}

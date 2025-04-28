@@ -53,7 +53,7 @@ void MJPEGCameraNode::timer_callback()
 int main(int argc, char * argv[])
 {
     rclcpp::init(argc, argv);
-    auto node = std::make_shared<dexi_camera_cpp::MJPEGCameraNode>();
+    auto node = std::make_shared<dexi_camera::MJPEGCameraNode>();
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;
