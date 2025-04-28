@@ -10,6 +10,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(camera_info_manager REQUIRED)
+find_package(camera_calibration_parsers REQUIRED)
 
 # Include directories
 include_directories(
@@ -22,6 +24,8 @@ add_executable(camera_node src/camera_node.cpp)
 ament_target_dependencies(camera_node
   rclcpp
   sensor_msgs
+  camera_info_manager
+  camera_calibration_parsers
 )
 target_link_libraries(camera_node
   ${OpenCV_LIBS}
