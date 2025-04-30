@@ -19,7 +19,7 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
-# Add executable
+# Add executables
 add_executable(camera_node src/camera_node.cpp)
 ament_target_dependencies(camera_node
   rclcpp
@@ -31,9 +31,21 @@ target_link_libraries(camera_node
   ${OpenCV_LIBS}
 )
 
+add_executable(raw_camera_node src/raw_camera_node.cpp)
+ament_target_dependencies(raw_camera_node
+  rclcpp
+  sensor_msgs
+  camera_info_manager
+  camera_calibration_parsers
+)
+target_link_libraries(raw_camera_node
+  ${OpenCV_LIBS}
+)
+
 # Install
 install(TARGETS
   camera_node
+  raw_camera_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
