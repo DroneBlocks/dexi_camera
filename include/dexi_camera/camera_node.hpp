@@ -1,3 +1,6 @@
+#ifndef DEXI_CAMERA_CAMERA_NODE_HPP_
+#define DEXI_CAMERA_CAMERA_NODE_HPP_
+
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/compressed_image.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
@@ -11,29 +14,18 @@ namespace dexi_camera
 class MJPEGCameraNode : public rclcpp::Node
 {
 public:
-    explicit MJPEGCameraNode();
+    MJPEGCameraNode();
 
 private:
     void timer_callback();
-    void load_camera_calibration();
     
     rclcpp::Publisher<sensor_msgs::msg::CompressedImage>::SharedPtr publisher_;
-    rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr camera_info_publisher_;
+    rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr camera_info_pub_;
+    std::unique_ptr<camera_info_manager::CameraInfoManager> camera_info_manager_;
     rclcpp::TimerBase::SharedPtr timer_;
     cv::VideoCapture cap_;
-    cv::Mat frame_;
-    std::vector<uchar> jpeg_buffer_;
-    
-    std::shared_ptr<camera_info_manager::CameraInfoManager> camera_info_manager_;
-    
-    // Parameters
-    int camera_id_;
-    int camera_width_;
-    int camera_height_;
-    int jpeg_quality_;
-    double timer_interval_;
-    std::string camera_name_;
-    std::string camera_info_url_;
 };
 
-}
+} // namespace dexi_camera
+
+#endif // DEXI_CAMERA_CAMERA_NODE_HPP_
