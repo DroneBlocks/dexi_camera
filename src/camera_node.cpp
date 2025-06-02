@@ -72,6 +72,15 @@ MJPEGCameraNode::MJPEGCameraNode()
 
 void MJPEGCameraNode::timer_callback()
 {
+    // Get current time once to ensure same timestamp for both messages
+    auto current_time = this->now();
+    
+    // Publish camera info regardless of image capture success
+    auto camera_info = camera_info_manager_->getCameraInfo();
+    camera_info.header.stamp = current_time;
+    camera_info.header.frame_id = "camera_optical_frame";  // Set a consistent frame_id
+    camera_info_pub_->publish(camera_info);
+
     cv::Mat frame;
     if (cap_.read(frame)) {
         // Convert frame to JPEG format
@@ -81,15 +90,11 @@ void MJPEGCameraNode::timer_callback()
 
         // Create and publish image message
         auto msg = std::make_unique<sensor_msgs::msg::CompressedImage>();
-        msg->header.stamp = this->now();
+        msg->header.stamp = current_time;
+        msg->header.frame_id = "camera_optical_frame";  // Set the same frame_id
         msg->format = "jpeg";
         msg->data = buffer;
         publisher_->publish(std::move(msg));
-
-        // Publish camera info
-        auto camera_info = camera_info_manager_->getCameraInfo();
-        camera_info.header.stamp = this->now();
-        camera_info_pub_->publish(camera_info);
     }
 }
 
