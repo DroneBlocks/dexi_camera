@@ -13,6 +13,9 @@ find_package(OpenCV REQUIRED)
 find_package(camera_info_manager REQUIRED)
 find_package(camera_calibration_parsers REQUIRED)
 
+# Find Python dependencies
+find_package(ament_cmake_python REQUIRED)
+
 # Include directories
 include_directories(
   include
@@ -64,7 +67,12 @@ install(DIRECTORY
 # Install config files
 install(DIRECTORY
   config/
-  DESTINATION share/${PROJECT_NAME}
+)
+
+# Install Python scripts
+install(PROGRAMS
+  src/csi_camera_node.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
