@@ -1,6 +1,6 @@
 # Camera calibration data for Pi Camera 2.1 (actual calibration)
 # Calibrated at 640x480 resolution
-camera_name: "csi_camera"
+camera_name: "imx219__base_soc_i2c0mux_i2c_1_imx219_10_640x480"
 image_width: 640
 image_height: 480
 camera_matrix:
