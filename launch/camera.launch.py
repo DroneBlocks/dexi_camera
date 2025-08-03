@@ -52,7 +52,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'camera_info_url',
-            default_value='file://' + os.path.join(pkg_share, 'arducam_12mp_uvc.yaml'),
+            default_value='file://' + os.path.join(pkg_share, 'config', 'arducam_12mp_uvc.yaml'),
             description='Path to camera calibration file'
         ),
         

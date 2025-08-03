@@ -44,7 +44,7 @@ def generate_launch_description():
     
     camera_info_url_arg = DeclareLaunchArgument(
         'camera_info_url',
-        default_value='file:///home/dexi/dexi_ws/src/dexi_camera/config/picam_2.1_csi.yaml',
+        default_value='file://' + os.path.join(pkg_share, 'config', 'picam_2.1_csi.yaml'),
         description='URL to camera calibration file'
     )
     
