@@ -113,14 +113,14 @@ class CameraSimulatorNode(Node):
             camera_info.distortion_model = "plumb_bob"
             camera_info.d = [0.0, 0.0, 0.0, 0.0, 0.0]
             camera_info.k = [
-                self.camera_width, 0.0, self.camera_width/2.0,
-                0.0, self.camera_width, self.camera_height/2.0,
+                float(self.camera_width), 0.0, float(self.camera_width)/2.0,
+                0.0, float(self.camera_width), float(self.camera_height)/2.0,
                 0.0, 0.0, 1.0
             ]
             camera_info.r = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
             camera_info.p = [
-                self.camera_width, 0.0, self.camera_width/2.0, 0.0,
-                0.0, self.camera_width, self.camera_height/2.0, 0.0,
+                float(self.camera_width), 0.0, float(self.camera_width)/2.0, 0.0,
+                0.0, float(self.camera_width), float(self.camera_height)/2.0, 0.0,
                 0.0, 0.0, 1.0, 0.0
             ]
 
