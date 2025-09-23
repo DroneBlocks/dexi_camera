@@ -29,28 +29,21 @@ class CameraSimulatorNode(Node):
         # Image counter
         self.image_counter = 1
 
-        # Create publishers (same topics as real camera)
+        # Create compressed image publisher
         self.image_pub = self.create_publisher(
             CompressedImage,
             f'{self.camera_name}/image_raw/compressed',
             10
         )
 
-        self.camera_info_pub = self.create_publisher(
-            CameraInfo,
-            f'{self.camera_name}/camera_info',
-            10
-        )
-
-        # Create timer
-        self.timer = self.create_timer(self.timer_interval, self.timer_callback)
+        # Create timer for publishing every 2 seconds
+        self.timer = self.create_timer(2.0, self.timer_callback)  # Every 2 seconds
 
         self.get_logger().info('Camera Simulator node initialized with parameters:')
         self.get_logger().info(f'  Resolution: {self.camera_width}x{self.camera_height}')
         self.get_logger().info(f'  JPEG Quality: {self.jpeg_quality}')
-        self.get_logger().info(f'  Timer Interval: {self.timer_interval}')
         self.get_logger().info(f'  Camera Name: {self.camera_name}')
-        self.get_logger().info(f'  Publishing to: {self.camera_name}/image_raw/compressed')
+        self.get_logger().info(f'  Publishing to: {self.camera_name}/image_raw/compressed every 2 seconds')
 
     def generate_test_image(self):
         """Generate a test image with the current counter number"""
@@ -99,39 +92,14 @@ class CameraSimulatorNode(Node):
             msg.format = 'jpeg'
             msg.data = jpeg_data.tobytes()
 
-            # Publish image
+            # Publish image every 2 seconds
             self.image_pub.publish(msg)
-
-            # Create and publish basic camera info
-            camera_info = CameraInfo()
-            camera_info.header.stamp = msg.header.stamp
-            camera_info.header.frame_id = 'camera_optical_frame'
-            camera_info.width = self.camera_width
-            camera_info.height = self.camera_height
-
-            # Basic camera model (no distortion)
-            camera_info.distortion_model = "plumb_bob"
-            camera_info.d = [0.0, 0.0, 0.0, 0.0, 0.0]
-            camera_info.k = [
-                float(self.camera_width), 0.0, float(self.camera_width)/2.0,
-                0.0, float(self.camera_width), float(self.camera_height)/2.0,
-                0.0, 0.0, 1.0
-            ]
-            camera_info.r = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
-            camera_info.p = [
-                float(self.camera_width), 0.0, float(self.camera_width)/2.0, 0.0,
-                0.0, float(self.camera_width), float(self.camera_height)/2.0, 0.0,
-                0.0, 0.0, 1.0, 0.0
-            ]
-
-            self.camera_info_pub.publish(camera_info)
 
             # Increment counter
             self.image_counter += 1
 
-            # Log occasionally
-            if self.image_counter % 30 == 0:  # Every second at 30fps
-                self.get_logger().info(f'Published frame {self.image_counter}')
+            # Log each frame
+            self.get_logger().info(f'Published frame {self.image_counter}')
 
         except Exception as e:
             self.get_logger().error(f'Error generating test frame: {str(e)}')
