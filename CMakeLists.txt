@@ -73,6 +73,8 @@ install(DIRECTORY
 # Install Python scripts
 install(PROGRAMS
   src/csi_camera_node.py
+  src/camera_simulator_node.py
+  src/video_recorder_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
