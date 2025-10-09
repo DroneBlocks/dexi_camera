@@ -18,16 +18,15 @@ class VideoRecorderNode(Node):
 
         # Declare parameters
         self.declare_parameter('image_topic', '/cam0/image_raw/compressed')
-        self.declare_parameter('output_directory', '~/dexi_recordings')
+        self.declare_parameter('output_directory', '/home/dexi/dexi_recordings')
         self.declare_parameter('fps', 30.0)
-        self.declare_parameter('codec', 'mp4v')  # Options: 'mp4v', 'avc1', 'h264'
+        self.declare_parameter('codec', 'avc1')  # avc1 (H.264) for better Mac/QuickTime compatibility
         self.declare_parameter('frame_width', 320)
         self.declare_parameter('frame_height', 240)
 
         # Get parameters
         self.image_topic = self.get_parameter('image_topic').value
-        output_dir = self.get_parameter('output_directory').value
-        self.output_directory = os.path.expanduser(output_dir)
+        self.output_directory = self.get_parameter('output_directory').value
         self.fps = self.get_parameter('fps').value
         self.codec = self.get_parameter('codec').value
         self.frame_width = self.get_parameter('frame_width').value
@@ -42,6 +41,7 @@ class VideoRecorderNode(Node):
         self.current_filename = None
         self.recording_timer = None
         self.lock = threading.Lock()
+        self.frame_count = 0
 
         # Subscribe to compressed image topic
         self.image_sub = self.create_subscription(
@@ -111,6 +111,11 @@ class VideoRecorderNode(Node):
 
                 # Write frame to video
                 self.video_writer.write(frame)
+                self.frame_count += 1
+
+                # Log every 30 frames
+                if self.frame_count % 30 == 0:
+                    self.get_logger().info(f'Recorded {self.frame_count} frames')
 
         except Exception as e:
             self.get_logger().error(f'Error processing frame: {str(e)}')
@@ -131,12 +136,15 @@ class VideoRecorderNode(Node):
                     f'recording_{timestamp}.mp4'
                 )
 
+                # Reset frame counter
+                self.frame_count = 0
+
                 # Create video writer
                 fourcc = cv2.VideoWriter_fourcc(*self.codec)
                 self.video_writer = cv2.VideoWriter(
                     self.current_filename,
                     fourcc,
-                    self.fps,
+                    int(self.fps),  # Convert to int for VideoWriter
                     (self.frame_width, self.frame_height)
                 )
 
@@ -147,6 +155,7 @@ class VideoRecorderNode(Node):
                     return response
 
                 self.is_recording = True
+                self.get_logger().info(f'VideoWriter opened successfully. Codec: {self.codec}, FPS: {int(self.fps)}, Size: {self.frame_width}x{self.frame_height}')
 
             response.success = True
             response.message = f'Started recording to {self.current_filename}'
@@ -181,7 +190,7 @@ class VideoRecorderNode(Node):
                     self.recording_timer = None
 
             response.success = True
-            response.message = f'Stopped recording. Video saved to {self.current_filename}'
+            response.message = f'Stopped recording. Video saved to {self.current_filename}. Total frames: {self.frame_count}'
             self.get_logger().info(response.message)
 
         except Exception as e:

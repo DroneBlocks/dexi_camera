@@ -20,7 +20,7 @@ def generate_launch_description():
 
     output_directory_arg = DeclareLaunchArgument(
         'output_directory',
-        default_value='~/dexi_recordings',
+        default_value='/home/dexi/dexi_recordings',
         description='Directory to save recorded videos'
     )
 
@@ -32,8 +32,8 @@ def generate_launch_description():
 
     codec_arg = DeclareLaunchArgument(
         'codec',
-        default_value='mp4v',
-        description='Video codec (mp4v, avc1, h264)'
+        default_value='avc1',
+        description='Video codec (avc1, mp4v, h264) - avc1 recommended for Mac'
     )
 
     frame_width_arg = DeclareLaunchArgument(

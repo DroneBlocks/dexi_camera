@@ -56,9 +56,9 @@ The `video_recorder.launch.py` launch file accepts the following parameters:
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `image_topic` | `/cam0/image_raw/compressed` | Compressed image topic to subscribe to |
-| `output_directory` | `~/dexi_recordings` | Directory to save recorded videos |
+| `output_directory` | `/home/dexi/dexi_recordings` | Directory to save recorded videos |
 | `fps` | `30.0` | Frames per second for output video |
-| `codec` | `mp4v` | Video codec (`mp4v`, `avc1`, `h264`) |
+| `codec` | `avc1` | Video codec (`avc1`, `mp4v`, `h264`) - avc1 recommended for Mac |
 | `frame_width` | `320` | Output video frame width |
 | `frame_height` | `240` | Output video frame height |
 | `record_duration` | `10.0` | Default duration for timed recording (seconds) |
@@ -138,13 +138,13 @@ ros2 param set /video_recorder_node output_directory ~/new_videos
 Videos are saved with automatic timestamp-based naming:
 
 ```
-~/dexi_recordings/recording_YYYYMMDD_HHMMSS.mp4
+/home/dexi/dexi_recordings/recording_YYYYMMDD_HHMMSS.mp4
 ```
 
 Example:
 ```
-~/dexi_recordings/recording_20251009_162014.mp4
-~/dexi_recordings/recording_20251009_163522.mp4
+/home/dexi/dexi_recordings/recording_20251009_162014.mp4
+/home/dexi/dexi_recordings/recording_20251009_163522.mp4
 ```
 
 ## Integration Examples
@@ -233,12 +233,12 @@ The node supports multiple video codecs:
 
 | Codec | Description | Quality | Compatibility |
 |-------|-------------|---------|---------------|
-| `mp4v` | MPEG-4 Part 2 | Good | Universal |
-| `avc1` | H.264 | Better | Most players |
-| `h264` | H.264 variant | Better | Most players |
+| `avc1` | H.264 | Excellent | Best for Mac/QuickTime |
+| `mp4v` | MPEG-4 Part 2 | Good | Universal (but not Mac) |
+| `h264` | H.264 variant | Excellent | Most players |
 | `XVID` | Xvid MPEG-4 | Good | Universal |
 
-**Recommendation:** Use `mp4v` for maximum compatibility or `avc1` for better quality.
+**Recommendation:** Use `avc1` for Mac/QuickTime compatibility (default). Use `mp4v` only if avc1 doesn't work on your system.
 
 ## Troubleshooting
 
@@ -247,8 +247,8 @@ The node supports multiple video codecs:
 **Solution:** The node creates the directory automatically, but ensure the parent directory exists and you have write permissions.
 
 ```bash
-mkdir -p ~/dexi_recordings
-chmod 755 ~/dexi_recordings
+mkdir -p /home/dexi/dexi_recordings
+chmod 755 /home/dexi/dexi_recordings
 ```
 
 ### Issue: "Failed to open video writer"
