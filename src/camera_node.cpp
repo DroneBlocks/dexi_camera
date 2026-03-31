@@ -56,6 +56,13 @@ MJPEGCameraNode::MJPEGCameraNode()
     cap_.set(cv::CAP_PROP_FRAME_WIDTH, width);
     cap_.set(cv::CAP_PROP_FRAME_HEIGHT, height);
 
+    // Anti-flicker settings for Arducam 12MP UVC
+    // Manual exposure prevents frame-to-frame brightness variation
+    cap_.set(cv::CAP_PROP_AUTO_EXPOSURE, 1);    // 1 = Manual mode
+    cap_.set(cv::CAP_PROP_EXPOSURE, 200);        // Fixed exposure value
+    cap_.set(cv::CAP_PROP_BRIGHTNESS, 0);        // Default brightness
+    cap_.set(cv::CAP_PROP_AUTOFOCUS, 0);         // Disable autofocus
+
     // Create timer with configured interval
     timer_ = this->create_wall_timer(
         std::chrono::duration<double>(timer_interval),
