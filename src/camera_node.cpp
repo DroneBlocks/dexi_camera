@@ -44,8 +44,14 @@ MJPEGCameraNode::MJPEGCameraNode()
     camera_info_pub_ = this->create_publisher<sensor_msgs::msg::CameraInfo>(
         camera_name + "/camera_info", 10);
 
-    // Initialize camera
-    cap_.open(camera_id);
+    // Initialize camera via the V4L2 backend explicitly.
+    // The default backend selection lands on GStreamer, whose auto-built
+    // v4l2src pipeline cannot negotiate with MJPG-only cameras (e.g. the
+    // Arducam 12MP UVC) because no jpegdec element is inserted. That falls
+    // through into a half-broken state that silently delivers ~15 Hz instead
+    // of the configured 30 Hz. CAP_V4L2 talks straight to the kernel,
+    // honors CAP_PROP_FOURCC=MJPG, and runs at the requested rate.
+    cap_.open(camera_id, cv::CAP_V4L2);
     if (!cap_.isOpened()) {
         RCLCPP_ERROR(this->get_logger(), "Failed to open camera with ID: %d", camera_id);
         return;
