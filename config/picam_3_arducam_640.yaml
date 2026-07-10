@@ -1,0 +1,20 @@
+image_width: 640
+image_height: 480
+camera_name: picam_3_arducam_640
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [635.224463, 0.000000, 424.124977, 0.000000, 638.738411, 232.779723, 0.000000, 0.000000, 1.000000]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.075387, -0.040435, -0.002789, -0.002850, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [635.224463, 0.000000, 424.124977, 0.000000, 0.000000, 638.738411, 232.779723, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]
