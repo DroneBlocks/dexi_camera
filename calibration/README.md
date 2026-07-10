@@ -61,13 +61,6 @@ variety are what pin down `cx`, `cy`, and the distortion terms — skipping them
 you get a low-error fit that's still wrong. The counter (`saved N/40`) reflects frames
 actually written on the drone, so if the drone stops saving, the counter stops.
 
-Two example poses from a real run — note the board pushed to the edge and tilted (left),
-and small/far (right):
-
-| tilted, into the corner | far / smaller |
-|---|---|
-| ![tilted pose](assets/example_pose_tilt.png) | ![far pose](assets/example_pose_far.png) |
-
 ### 3. Pull the frames and solve (on your laptop)
 
 ```bash
