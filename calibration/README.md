@@ -39,11 +39,14 @@ the real saved count on `/calib/count`.
 
 ```bash
 ssh dexi@192.168.4.1              # password: dexi
-source ~/ros2_jazzy/install/setup.bash
-source ~/dexi_ws/install/setup.bash
-rm -f ~/calib_frames/*.png
-setsid python3 ~/calib_snap.py </dev/null >~/snap.log 2>&1 &
+sudo bash -c 'source /home/dexi/ros2_jazzy/install/setup.bash
+source /home/dexi/dexi_ws/install/setup.bash
+mkdir -p /home/dexi/calib_frames; rm -f /home/dexi/calib_frames/*.png
+cd /home/dexi; HOME=/home/dexi setsid python3 /home/dexi/calib_snap.py </dev/null >/home/dexi/snap.log 2>&1 &'
 ```
+
+Run it as root. `dexi.service` runs the camera as root, and a node started as the `dexi`
+user can't see root's topics, so the live view sits on "WAITING for snap node".
 
 ### 2. Start the live view on your laptop, then open the browser
 
