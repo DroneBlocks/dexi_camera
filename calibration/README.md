@@ -112,3 +112,20 @@ actually ship.
 | `calibrate.py` | laptop | offline solver → `camera_info` YAML + quality gates |
 | `fetch_frames.py` | laptop | sftp the PNGs back |
 | `calib_capture.py` | drone | fallback: dumb interval capture, no live view |
+
+## Reference result — IMX708 Wide, upright, 768×432 (sensor_mode 2304:1296)
+
+`config/picam_3_wide_768x432.yaml`. The 120° lens bends too hard for `plumb_bob`
+(RMS 0.36 px, fails the gate), so this file uses OpenCV's rational model
+(`CALIB_RATIONAL_MODEL`, ROS `rational_polynomial`, 8 coefficients):
+
+```
+fx = 336.57   fy = 338.69      cx = 386.22   cy = 210.83
+RMS 0.113 px   holdout 0.099 px   40 frames   HFOV ~99°
+```
+
+Tape check: 3⅞" tag on the floor, camera 45" up, range from the tag pose = 45.1".
+`apriltag_ros` ignores the distortion terms (it runs `solvePnP` on the raw image with
+`P` only), so tags near the image edge still carry some pose error.
+`calibrate.py` fits `plumb_bob` only; the rational fit was done with the same frames and
+`cv2.calibrateCamera(..., flags=cv2.CALIB_RATIONAL_MODEL)`.
