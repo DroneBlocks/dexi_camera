@@ -113,9 +113,9 @@ actually ship.
 | `fetch_frames.py` | laptop | sftp the PNGs back |
 | `calib_capture.py` | drone | fallback: dumb interval capture, no live view |
 
-## Reference result — IMX708 Wide, upright, 768×432 (sensor_mode 2304:1296)
+## Reference result — Arducam IMX708 Wide, upright, 768×432 (sensor_mode 2304:1296)
 
-`config/picam_3_wide_768x432.yaml`. The 120° lens bends too hard for `plumb_bob`
+`config/picam_3_arducam_wide_768x432.yaml`. The 120° lens bends too hard for `plumb_bob`
 (RMS 0.36 px, fails the gate), so this file uses OpenCV's rational model
 (`CALIB_RATIONAL_MODEL`, ROS `rational_polynomial`, 8 coefficients):
 
