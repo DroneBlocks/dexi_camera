@@ -1,5 +1,7 @@
 # Camera Intrinsic Calibration
 
+> **Newer option:** [`charuco/`](charuco/) has a guided ChArUco tool that takes about 3 minutes.
+
 Tools to compute the intrinsic calibration (`camera_info`) for a DEXI CSI camera and
 drop the result into [`../config/`](../config/).
 
