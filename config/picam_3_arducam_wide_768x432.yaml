@@ -1,0 +1,21 @@
+image_width: 768
+image_height: 432
+camera_name: picam_3_arducam_wide_768x432
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [336.566170, 0.000000, 386.222821, 0.000000, 338.686823, 210.834533, 0.000000, 0.000000, 1.000000]
+distortion_model: rational_polynomial
+distortion_coefficients:
+  rows: 1
+  cols: 8
+  data: [-1.425217, 1.138022, 0.000180, 0.000164, -0.126922, -1.389179, 1.034882, -0.055556]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 1.000000]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [336.566170, 0.000000, 386.222821, 0.000000, 0.000000, 338.686823, 210.834533, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]
+# Arducam IMX708 Wide, sensor_mode 2304:1296 -> 768x432, upright. 40 views, RMS 0.113 px, rational_polynomial.
